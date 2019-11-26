@@ -148,6 +148,11 @@ class Automate(AutomateBase):
             setATraiter.add(s)
         aTraiter.append(setATraiter)
 
+        for a in aTraiter :
+            if str(a) not in dicoStates.keys() :
+                dicoStates[str(a)] = State(numero, True, any(i.fin for i in a), str(a))
+                numero = numero + 1
+
         while aTraiter != [] :
 
             listRepro = aTraiter
@@ -169,7 +174,7 @@ class Automate(AutomateBase):
                     dest = set(listDest)
 
                     if str(dest) not in dicoStates.keys() :
-                        dicoStates[str(dest)] = State(numero, any(i.init for i in dest), any(i.fin for i in dest), str(dest))
+                        dicoStates[str(dest)] = State(numero, False, any(i.fin for i in dest), str(dest))
                         numero = numero + 1
                         
                     listTransitions.append(Transition(dicoStates[str(a)], l, dicoStates[str(dest)]))
