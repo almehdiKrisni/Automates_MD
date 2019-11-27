@@ -194,7 +194,7 @@ class Automate(AutomateBase):
         listEtats = auto.listStates
 
         for v in listEtats :
-            v.fin = !(v.fin)
+            v.fin = not (v.fin)
 
         return Automate(auto.listTransitions, listEtats)
    
