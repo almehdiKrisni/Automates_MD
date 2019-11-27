@@ -191,10 +191,12 @@ class Automate(AutomateBase):
  
     @staticmethod
     def complementaire(auto,alphabet):
-        """ Automate -> Automate
-        rend  l'automate acceptant pour langage le complémentaire du langage de a
-        """
-              
+        listEtats = auto.listStates
+
+        for v in listEtats :
+            v.fin = !(v.fin)
+
+        return Automate(auto.listTransitions, listEtats)
    
     @staticmethod
     def intersection (auto0, auto1):
