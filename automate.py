@@ -191,6 +191,7 @@ class Automate(AutomateBase):
  
     @staticmethod
     def complementaire(auto,alphabet):
+        
         listEtats = auto.listStates
 
         for v in listEtats :
