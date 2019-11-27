@@ -15,7 +15,7 @@ from parser import *
 
 #import projet
 
-print "DEBUT PROGRAMME\n"
+print("DEBUT PROGRAMME\n")
 
 
 s = State(1, False, False)
@@ -34,8 +34,8 @@ print "t "+ str(t)
 print "a "+ str(a)
 """
 
-print "s=s2? "+ str(s==s2)
-print "t=t2? "+ str(t==t2)
+print("s=s2? "+ str(s==s2))
+print("t=t2? "+ str(t==t2))
 
 s1=State(1, True, False)
 s2=State(2, False, True)
@@ -47,14 +47,14 @@ t5=Transition(s2,"b",s2)
 liste = [t1,t2,t3,t4,t5]
 a=Automate(listStates=[], label="a", listTransitions=liste) 
 
-print "a : "
-print a
-print a.listStates
+print("a : ")
+print(a)
+print(a.listStates)
 #print a.getListStates()
 #print a.getSetStates()
-print a.getListInitialStates()
-print a.getListFinalStates()
-print a.getListTransitionsFrom(s1)
+print(a.getListInitialStates())
+print(a.getListFinalStates())
+print(a.getListTransitionsFrom(s1))
 #a.show("nouvela")
 a.prefixStates(0)
 a.show("prefixe")
@@ -62,18 +62,18 @@ a.show("prefixe")
 
 
 a.removeTransition(t5)
-print a
+print(a)
 a.removeTransition(t5)
-print a
+print(a)
 
 a.addTransition(t5)
-print a
+print(a)
 
 a.addTransition(Transition(s2,"c", s1))
-print a
+print(a)
 
 a.addTransition(Transition(s2,"c",s1))
-print a 
+print(a) 
 #t = Transition("a", )
 
 """
@@ -96,8 +96,8 @@ print Automate.estComplet(a,["a","b","c"])
 print Automate.estComplet(a, ["0","1"])
 print Automate.estComplet(a, ["a","b"])
 """
-print "Deterministe"
-print Automate.estDeterministe(a)
+print("Deterministe")
+print(Automate.estDeterministe(a))
 
 #b=Automate.completeAuto(a,["a","b","c"])
 #a.show("automate_a")
@@ -135,22 +135,22 @@ result = my_parser("#E: 4 1 5 #I: 1 2 #F: 3 4 #T: (1 2 2)")
 #result = my_parser("#E:ab c #I:z r #F:a ab #T: (1 a 2)")
 #result = my_parser("E:42 12 3")
 #result = my_parser("E: Q1 Q2 Q3 -I: Q1 Q2")
-print "result ",result
+print("result ",result)
 
 
-fichier = open("../../test/testDeter.txt")
+fichier = open("exempleAutomate.txt")
 s = fichier.read()
-print s
+print(s)
 result = my_parser(s)
-print result
+print(result)
 fichier.close()
 
-automate = Automate.creationAutomate("../../test/testDeter.txt")
-print "AUTOMATE CREATION"
-print automate 
+automate = Automate.creationAutomate("exempleAutomate.txt")
+print("AUTOMATE CREATION")
+print(automate)
 automate.prefixStates(0)
-print "PREFIXE"
-print automate
+print("PREFIXE")
+print(automate)
 automate.show("parser")
 
 
@@ -261,4 +261,4 @@ o.affiche("apEtoile")
 
 
 
-print "\nFIN PROGRAMME\n"
+print("\nFIN PROGRAMME\n")
