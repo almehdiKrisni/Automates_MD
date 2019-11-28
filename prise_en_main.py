@@ -132,6 +132,5 @@ def main():
     auto3_det.show("Automate_Examen_Determinise")
     
 
-
 if __name__ == "__main__":
     main()
