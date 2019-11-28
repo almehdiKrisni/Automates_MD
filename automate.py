@@ -194,12 +194,12 @@ class Automate(AutomateBase):
     @staticmethod
     def complementaire(auto,alphabet):
         
-        listEtats = auto.listStates
+        new_auto = Automate.determinisation(Automate.completeAutomate(auto, auto.getAlphabetFromTransitions()))
 
-        for v in listEtats :
-            v.fin = not (v.fin)
+        for v in new_auto.listStates :
+            v.fin = not v.fin
 
-        return Automate(auto.listTransitions, listEtats)
+        return new_auto
    
     @staticmethod
     def intersection (auto0, auto1):

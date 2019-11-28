@@ -83,9 +83,9 @@ def main():
     print()
 
     # On complète l'automate auto2
-    auto2.show("Avant_la_completion.pdf")
+    #auto2.show("Avant_la_completion.pdf")
     new_auto2 = Automate.completeAutomate(auto2, auto2.getAlphabetFromTransitions())
-    new_auto2.show("Apres_la_completion.pdf")
+    #new_auto2.show("Apres_la_completion.pdf")
     
 
     ss0 = State(0, True, False)
@@ -100,10 +100,10 @@ def main():
 
     autotest = Automate([tt1, tt2, tt3, tt4, tt5])
     print(autotest)
-    autotest.show("autotest_avant_determinisation")
+    #autotest.show("autotest_avant_determinisation")
     new_autotest = Automate.determinisation(autotest)
     print(new_autotest)
-    new_autotest.show("autotest_apres_determinisation")
+    #new_autotest.show("autotest_apres_determinisation")
 
     print("\nTest sur l'examen\n")
     so1 = State(1, True, False)
@@ -123,14 +123,22 @@ def main():
     print("\nL'automate auto3 est-il complet ? " + str(Automate.estComplet(auto3, auto3.getAlphabetFromTransitions())) + "\n")
     auto3_comp = Automate.completeAutomate(auto3, auto3.getAlphabetFromTransitions())
     print("\nL'automate auto3_comp est-il complet ? " + str(Automate.estComplet(auto3_comp, auto3_comp.getAlphabetFromTransitions())) + "\n")
-    auto3_comp.show("Automate_Examen_Complété")
+    #auto3_comp.show("Automate_Examen_Complété")
 
     auto3_n = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
     print("\nL'automate auto3_n est-il déterministe ? " + str(Automate.estDeterministe(auto3_n)) + "\n")
     auto3_det = Automate.determinisation(auto3_n)
     print("\nL'automate auto3_det est-il déterministe ? " + str(Automate.estDeterministe(auto3_det)) + "\n")
-    auto3_det.show("Automate_Examen_Determinise")
-    
+    #auto3_det.show("Automate_Examen_Determinise")
+
+    print("\nL'automate complémentaire de l'automate auto3 de base\n")
+    auto3_uno = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
+    auto3_primo = Automate.determinisation(Automate.completeAutomate(auto3_uno, auto3_uno.getAlphabetFromTransitions()))
+    auto3_primo.show("salam")
+    auto3_dos = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
+    auto3_complementaire = Automate.complementaire(auto3_dos, auto3_dos.getAlphabetFromTransitions())
+    auto3_complementaire.show("nice")
+
 
 if __name__ == "__main__":
     main()

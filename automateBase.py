@@ -214,10 +214,10 @@ class AutomateBase :
             os.system("dot -Tps "+ nomFichier + ".dot -o " + nomFichier + ".ps" )
             os.system("ps2pdf " + nomFichier + ".ps " + nomFichier + ".pdf")
             #MAC 
-            #os.system("open " + nomFichier + ".pdf")
+            os.system("open " + nomFichier + ".pdf")
             #LINUX
-            os.system("evince " + nomFichier + ".pdf &")
-            os.system("rm " + nomFichier + ".dot " + nomFichier + ".ps")
+            #os.system("evince " + nomFichier + ".pdf &")
+            #os.system("rm " + nomFichier + ".dot " + nomFichier + ".ps")
             #os.system("dot -Tpng -o"+ nomFichier + ".png " + nomFichier + ".dot")
             #os.system("open " + nomFichier + ".png")
 
