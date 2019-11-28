@@ -61,16 +61,11 @@ class Automate(AutomateBase):
         trans = auto.getListInitialStates()
 
         for i in range(len(mot)) :
-            if (i == len(mot) - 1) :
-                for s in auto.succ(trans, mot[i]) :
-                    if s.fin :
-                        return True
-                return False
-            else :
-                if auto.succ(trans, mot[i]) != [] :
-                    trans = auto.succ(trans, mot[i])
-                else :
-                    return False
+            for s in auto.succ(trans, mot[i]) :
+                if (i == len(mot) - 1) and (s.fin) :
+                    return True
+            trans = auto.succ(trans, mot[i])
+        return False
 
 
     @staticmethod
@@ -94,6 +89,9 @@ class Automate(AutomateBase):
         rend True si auto est déterministe, False sinon
         """
 
+        if len(auto.getListInitialStates()) > 1 :
+            return False
+
         for s in auto.listStates :
             for a in auto.getAlphabetFromTransitions() :
                 if len(auto.succElem(s, a)) > 1 :
@@ -113,12 +111,12 @@ class Automate(AutomateBase):
             return auto
 
         new_auto = auto
-        i = len(auto.listStates)
+        i = 0
 
         for s in new_auto.listStates :
             for a in alphabet :
                 if new_auto.succElem(s, a) == [] :
-                    ns = State(i, False, False)
+                    ns = State("neo" + str(s.id), False, False)
                     i = i + 1
                     new_auto.addTransition(Transition(s, a, ns))
                     for l in alphabet :
@@ -173,11 +171,15 @@ class Automate(AutomateBase):
                     listDest = auto.succ(listElem, l)
                     dest = set(listDest)
 
+                    if dest == set() :
+                        continue
+
                     if str(dest) not in dicoStates.keys() :
                         dicoStates[str(dest)] = State(numero, False, any(i.fin for i in dest), str(dest))
                         numero = numero + 1
                         
-                    listTransitions.append(Transition(dicoStates[str(a)], l, dicoStates[str(dest)]))
+                    if Transition(dicoStates[str(a)], l, dicoStates[str(dest)]) not in listTransitions :
+                        listTransitions.append(Transition(dicoStates[str(a)], l, dicoStates[str(dest)]))
 
                     if dest not in dejaTraiter :
                         aTraiter.append(dest)

@@ -167,7 +167,7 @@ class AutomateBase :
         appelée par la fonction show
         """
         # ret : str
-        ret = "digraph a { \n graph [rotate = 90];\n rankdir=LR\n"
+        ret = "digraph a { \n graph [rotate = 90];\n size=\"4.3,11.7!\";\n rankdir=LR\n"
         # state : State
         for state in self.listStates :
             ret += str(state.id) + "[ label =\"" + str(state.label) + "\","
