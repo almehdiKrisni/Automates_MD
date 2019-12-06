@@ -89,7 +89,7 @@ def main():
     
 
     ss0 = State(0, True, False)
-    ss1 = State(1, False, False)
+    ss1 = State(1, True, False)
     ss2 = State(2, False, False)
     ss3 = State(3, False, True)
     tt1 = Transition(ss0, "a", ss0)
@@ -100,10 +100,12 @@ def main():
 
     autotest = Automate([tt1, tt2, tt3, tt4, tt5])
     print(autotest)
-    #autotest.show("autotest_avant_determinisation")
+    autotest.show("autotest_avant_determinisation")
     new_autotest = Automate.determinisation(autotest)
     print(new_autotest)
-    #new_autotest.show("autotest_apres_determinisation")
+    new_autotest.show("autotest_apres_determinisation")
+    new_autotest2 = Automate.complementaire(autotest, autotest.getAlphabetFromTransitions())
+    new_autotest2.show("resulat_comp")
 
     print("\nTest sur l'examen\n")
     so1 = State(1, True, False)
@@ -134,10 +136,10 @@ def main():
     print("\nL'automate complémentaire de l'automate auto3 de base\n")
     auto3_uno = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
     auto3_primo = Automate.determinisation(Automate.completeAutomate(auto3_uno, auto3_uno.getAlphabetFromTransitions()))
-    auto3_primo.show("salam")
+    auto3_primo.show("pre")
     auto3_dos = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
     auto3_complementaire = Automate.complementaire(auto3_dos, auto3_dos.getAlphabetFromTransitions())
-    auto3_complementaire.show("nice")
+    auto3_complementaire.show("post")
 
 
 if __name__ == "__main__":

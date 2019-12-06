@@ -42,7 +42,6 @@ class Automate(AutomateBase):
 
 
 
-
     """ Définition d'une fonction déterminant si un mot est accepté par un automate.
     Exemple :
             a=Automate.creationAutomate("monAutomate.txt")
@@ -132,6 +131,9 @@ class Automate(AutomateBase):
         rend l'automate déterminisé d'auto
         """
 
+        if auto.estDeterministe :
+            return auto
+
         listTransitions = []
         alphabet = list(auto.getAlphabetFromTransitions())
         dicoStates = dict()
@@ -193,8 +195,9 @@ class Automate(AutomateBase):
  
     @staticmethod
     def complementaire(auto,alphabet):
+        autocpy = copy.deepcopy(auto)
         
-        new_auto = Automate.determinisation(Automate.completeAutomate(auto, auto.getAlphabetFromTransitions()))
+        new_auto = Automate.completeAutomate(Automate.determinisation(autocpy), auto.getAlphabetFromTransitions())
 
         for v in new_auto.listStates :
             v.fin = not v.fin
@@ -206,6 +209,7 @@ class Automate(AutomateBase):
         """ Automate x Automate -> Automate
         rend l'automate acceptant pour langage l'intersection des langages des deux automates
         """
+
         return
 
     @staticmethod
@@ -216,8 +220,6 @@ class Automate(AutomateBase):
         return
         
 
-   
-       
 
     @staticmethod
     def concatenation (auto1, auto2):
@@ -232,7 +234,21 @@ class Automate(AutomateBase):
         """ Automate  -> Automate
         rend l'automate acceptant pour langage l'étoile du langage de a
         """
-        return
+
+        autonew = copy.deepcopy(auto)
+        alphabet = auto.getAlphabetFromTransitions
+
+        for s in autonew.getListInitialStates() :
+            for a in alphabet :
+                transList = list(autonew.succElem(s, a))
+                for f in autonew.getListFinalStates() :
+                    for ns in transList :
+                        autonew.listTransitions.append(Transition(f, a, ns))
+
+        for i in autonew.getListInitialStates() :
+            i.fin = True
+
+        return autonew
 
 
 
