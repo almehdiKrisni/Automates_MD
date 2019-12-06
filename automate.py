@@ -106,7 +106,7 @@ class Automate(AutomateBase):
         """
 
         if Automate.estComplet(auto, alphabet) :
-            print("L'automate est déja complet")
+            print("L'automate est déja complet\n")
             return auto
 
         new_auto = auto
@@ -132,6 +132,7 @@ class Automate(AutomateBase):
         """
 
         if auto.estDeterministe :
+            print("L'automate est déjà d*terministe\n")
             return auto
 
         listTransitions = []
@@ -205,14 +206,75 @@ class Automate(AutomateBase):
         return new_auto
    
     @staticmethod
-    def intersection (auto0, auto1):
+    def intersection (auto1u, auto2u):
         """ Automate x Automate -> Automate
         rend l'automate acceptant pour langage l'intersection des langages des deux automates
         """
 
+        auto1 = copy.deepcopy(auto1u)
+        auto2 = copy.deepcopy(auto2u)
 
+        autonew = Automate(auto1.listTransitions + auto2.listTransitions)
+        autonew.listStates = auto1.listStates + auto2.listStates
+        autonew.show("Pre_Intersection")
 
-        return
+        listeDesTrans = list()
+
+        listeATraiter = list()
+        listeDejaTraiter = list()
+
+        dicoStates = dict()
+
+        numero = 0
+
+        initialState = set()
+        
+        for s in autonew.listStates :
+            if s.init :
+                initialState.add(s)
+
+        Salphabet = set(auto1.getAlphabetFromTransitions()) | set(auto2.getAlphabetFromTransitions())
+        alphabet = list(Salphabet)
+
+        dicoStates[str(initialState)] = State(numero, True, False, str(initialState))
+        numero = numero + 1
+        listeATraiter.append(initialState)
+
+        while listeATraiter != [] :
+
+            listeRepro = listeATraiter
+
+            for setEnCours in listeRepro :
+
+                if str(setEnCours) not in dicoStates.keys() :
+                    dicoStates[str(setEnCours)] = State(numero, False, all(s.fin for s in setEnCours), str(setEnCours))
+                    numero = numero + 1
+
+                for a in alphabet :
+
+                    setDest = set(autonew.succ(list(setEnCours), a))
+
+                    if setDest == set() :
+                        continue
+
+                    if str(setDest) not in dicoStates.keys() :
+                        dicoStates[str(setDest)] = State(numero, False, ((all(etat.fin for etat in setDest)) and (len(setDest) == 2)), set(setDest))
+                        numero = numero + 1
+
+                    if setDest not in listeDejaTraiter :
+                        listeATraiter.append(setDest)
+
+                    if Transition(dicoStates[str(setEnCours)], a, dicoStates[str(setDest)]) not in listeDesTrans :
+                        listeDesTrans.append(Transition(dicoStates[str(setEnCours)], a, dicoStates[str(setDest)]))
+
+                listeATraiter.remove(setEnCours)
+                listeDejaTraiter.append(setEnCours)
+
+        autonew_f = Automate(listeDesTrans)
+
+        autonew_f.show("Post_Intersection")
+
+        return autonew_f
 
     @staticmethod
     def union (auto1, auto2):

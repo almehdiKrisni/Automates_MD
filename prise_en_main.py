@@ -174,6 +174,11 @@ def main():
     auto_test_union = Automate.union(copy.deepcopy(auto_st_tr1), copy.deepcopy(auto_st_tr2))
     print(auto_test_union)
 
+    # On utilise la fonction d'intersection entre deux automates
+    
+    auto_test_intersection = Automate.intersection(copy.deepcopy(auto_st_tr1), copy.deepcopy(auto_st_tr2))
+    print(auto_test_intersection)
+
 
 if __name__ == "__main__":
     main()
