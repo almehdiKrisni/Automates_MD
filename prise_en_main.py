@@ -84,7 +84,7 @@ def main():
 
     # On complète l'automate auto2
     #auto2.show("Avant_la_completion.pdf")
-    new_auto2 = Automate.completeAutomate(auto2, auto2.getAlphabetFromTransitions())
+    new_auto2 = Automate.completeAutomate(copy.deepcopy(auto2), auto2.getAlphabetFromTransitions())
     #new_auto2.show("Apres_la_completion.pdf")
     
 
@@ -98,15 +98,15 @@ def main():
     tt4 = Transition(ss1, "a", ss2)
     tt5 = Transition(ss2, "b", ss3)
 
+    # On effectue des tests avec la fonction complementaire
     autotest = Automate([tt1, tt2, tt3, tt4, tt5])
     print(autotest)
-    autotest.show("autotest_avant_determinisation")
-    new_autotest = Automate.determinisation(autotest)
-    print(new_autotest)
-    new_autotest.show("autotest_apres_determinisation")
+    #autotest.show("autotest_avant_comp")
     new_autotest2 = Automate.complementaire(autotest, autotest.getAlphabetFromTransitions())
-    new_autotest2.show("resulat_comp")
+    print(new_autotest2)
+    #new_autotest2.show("resulat_comp")
 
+    # On effectue des tests sur un automate provenant d'un sujet de partiel
     print("\nTest sur l'examen\n")
     so1 = State(1, True, False)
     so2 = State(2, False, False)
@@ -121,9 +121,9 @@ def main():
 
     auto3 = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
     print(auto3)
-    auto3.show("Automate_Examen")
+    #auto3.show("Automate_Examen")
     print("\nL'automate auto3 est-il complet ? " + str(Automate.estComplet(auto3, auto3.getAlphabetFromTransitions())) + "\n")
-    auto3_comp = Automate.completeAutomate(auto3, auto3.getAlphabetFromTransitions())
+    auto3_comp = Automate.completeAutomate(copy.deepcopy(auto3), auto3.getAlphabetFromTransitions())
     print("\nL'automate auto3_comp est-il complet ? " + str(Automate.estComplet(auto3_comp, auto3_comp.getAlphabetFromTransitions())) + "\n")
     #auto3_comp.show("Automate_Examen_Complété")
 
@@ -134,12 +134,45 @@ def main():
     #auto3_det.show("Automate_Examen_Determinise")
 
     print("\nL'automate complémentaire de l'automate auto3 de base\n")
-    auto3_uno = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
-    auto3_primo = Automate.determinisation(Automate.completeAutomate(auto3_uno, auto3_uno.getAlphabetFromTransitions()))
-    auto3_primo.show("pre")
-    auto3_dos = Automate([to1, to2, to3, to4, to5, to6, to7], [so1, so2, so3])
-    auto3_complementaire = Automate.complementaire(auto3_dos, auto3_dos.getAlphabetFromTransitions())
-    auto3_complementaire.show("post")
+    auto3_complementaire = Automate.complementaire(copy.deepcopy(auto3), copy.deepcopy(auto3).getAlphabetFromTransitions())
+    print(auto3_complementaire)
+    #auto3_complementaire.show("post_complementaire")
+
+    # On utilise la fonction de concatenation entre deux automates    
+    prime1 = State(0, True, False)
+    prime2 = State(1, False, True)
+    prime3 = State(2, True, False)
+    prime4 = State(3, False, True)
+
+    tprime1 = Transition(prime1, "a", prime2)
+    tprime2 = Transition(prime2, "b", prime2)
+    tprime3 = Transition(prime3, "c", prime3)
+    tprime4 = Transition(prime3, "a", prime4)
+
+    auto_exam1 = Automate([tprime1, tprime2])
+    auto_exam2 = Automate([tprime3, tprime4])
+
+    auto_exam_c = Automate.concatenation(auto_exam1, auto_exam2)
+    print(auto_exam_c)
+
+    # On utilise la fonction d'union entre deux automates
+    st1 = State(1, True, False)
+    st2 = State(2, False, True)
+    tr1 = Transition(st1, "a", st1)
+    tr2 = Transition(st1, "b", st2)
+    tr3 = Transition(st2, "a", st2)
+    auto_st_tr1 = Automate([tr1, tr2, tr3])
+
+    st3 = State(3, True, False)
+    st4 = State(4, False, True)
+    tr4 = Transition(st3, "a", st4)
+    tr5 = Transition(st3, "b", st4)
+    tr6 = Transition(st3, "c", st4)
+    tr7 = Transition(st4, "a", st4)
+    auto_st_tr2 = Automate([tr4, tr5, tr6, tr7]) 
+
+    auto_test_union = Automate.union(copy.deepcopy(auto_st_tr1), copy.deepcopy(auto_st_tr2))
+    print(auto_test_union)
 
 
 if __name__ == "__main__":

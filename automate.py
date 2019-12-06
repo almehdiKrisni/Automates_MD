@@ -210,15 +210,38 @@ class Automate(AutomateBase):
         rend l'automate acceptant pour langage l'intersection des langages des deux automates
         """
 
+
+
         return
 
     @staticmethod
-    def union (auto0, auto1):
+    def union (auto1, auto2):
         """ Automate x Automate -> Automate
         rend l'automate acceptant pour langage l'union des langages des deux automates
         """
-        return
-        
+
+        autonew = Automate([])
+        autonew.listStates = auto1.listStates + auto2.listStates
+        autonew.listTransitions = auto1.listTransitions + auto2.listTransitions
+
+        alphabet = autonew.getAlphabetFromTransitions()
+
+        autonew.show("Pre_Union")
+
+        origin = State(0, True, False, "Origin")
+        autonew.listStates.append(origin)
+
+        for s in autonew.listStates :
+            if (s in auto1.getListInitialStates()) or (s in auto2.getListInitialStates()) :
+                s.init = False
+                for a in alphabet :
+                    listTrans = autonew.succElem(s, a)
+                    for t in listTrans :
+                        autonew.listTransitions.append(Transition(origin, a, t))
+
+        autonew.show("Post_Union")
+
+        return autonew
 
 
     @staticmethod
@@ -226,7 +249,33 @@ class Automate(AutomateBase):
         """ Automate x Automate -> Automate
         rend l'automate acceptant pour langage la concaténation des langages des deux automates
         """
-        return
+
+        autonew = Automate([])
+        autonew.listStates = auto1.listStates + auto2.listStates
+        autonew.listTransitions = auto1.listTransitions + auto2.listTransitions
+
+        alphabet = autonew.getAlphabetFromTransitions()
+
+        #autonew.show("Pre_Concatenation")
+
+        for i2 in auto2.getListInitialStates() :
+            for f1 in auto1.getListFinalStates() :
+                if i2.fin == False :
+                    f1.fin = False
+                for a in alphabet :
+                    listTrans = auto2.succElem(i2, a)
+                    for ns in listTrans :
+                        if ns == i2 :
+                            autonew.listTransitions.append(Transition(f1, a, f1))
+                        else :
+                            autonew.listTransitions.append(Transition(f1, a, ns))
+            autonew.listStates.remove(i2)
+
+        print("\nsalut\n")
+        
+        #autonew.show("Post_Concatenation")
+
+        return autonew
         
        
     @staticmethod
@@ -235,18 +284,23 @@ class Automate(AutomateBase):
         rend l'automate acceptant pour langage l'étoile du langage de a
         """
 
+        #auto.show("Pre_Etoile")
+
         autonew = copy.deepcopy(auto)
-        alphabet = auto.getAlphabetFromTransitions
+        alphabet = auto.getAlphabetFromTransitions()
 
         for s in autonew.getListInitialStates() :
             for a in alphabet :
                 transList = list(autonew.succElem(s, a))
                 for f in autonew.getListFinalStates() :
                     for ns in transList :
-                        autonew.listTransitions.append(Transition(f, a, ns))
+                        if ns not in autonew.getListInitialStates() :
+                            autonew.listTransitions.append(Transition(f, a, ns))
 
         for i in autonew.getListInitialStates() :
             i.fin = True
+
+        #autonew.show("Post_Etoile")
 
         return autonew
 
